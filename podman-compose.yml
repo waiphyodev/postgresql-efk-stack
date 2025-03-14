@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+    postgres:
+        image: postgres:latest
+        container_name: postgres-test
+        environment:
+            POSTGRES_PASSWORD: password
+        volumes:
+            - /path/to/postgresql-log-folder:/path/to/container-log-folder:Z
+            - /path/to/postgresql.conf:/etc/postgresql/postgresql.conf:Z
+        command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+        restart: always
+
+    fluent-bit:
+        image: fluent/fluent-bit:latest
+        container_name: fluent-bit
+        volumes:
+            - /path/to/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:Z
+            - /path/to/postgresql-log-folder:/path/to/container-log-folder:Z
+        restart: always

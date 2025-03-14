@@ -1,0 +1,13 @@
+podman run -d --rm \
+  --name postgres-test \
+  -v ${PWD}/postgres-data/log:/log:Z \
+  -v ${PWD}/postgresql.conf:/etc/postgresql/postgresql.conf:Z \
+  -e POSTGRES_PASSWORD=password \
+  postgres \
+  -c 'config_file=/etc/postgresql/postgresql.conf'
+
+podman run -d --rm \
+  --name fluent-bit \
+  -v ${PWD}/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:Z \
+  -v ${PWD}/postgres-data/log/postgresql.log:/var/log/postgresql.log:Z \
+  fluent-bit:latest
